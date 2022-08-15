@@ -14,10 +14,6 @@ def ori_obj(p) : # 原目标函数
 
 # A =                    b = 
 # [ 1,  1, ... ,  1      [1
-#   1,  0, ... ,  0       1
-#   0,  1, ... ,  0       1
-#   ...                   .
-#   0,  0, ... ,  1       1
 #  -1,  0, ... ,  0       0
 #   0, -1, ... ,  0       0
 #   ...                   .
@@ -34,23 +30,21 @@ def LR_grad_u(p, u) : # 拉格朗日松弛函数关于u求梯度
 
 def judge_u(u) : # 限定拉格朗日乘子u各元素的正负
     i = 1
-    while i < 2*n+1 :
+    while i < n+1 :
         if u[i] < 0 :
             u[i] = 0
         i += 1
 
 n = 50
 A1 = np.ones([1, n])
-A2 = np.identity(n)
-A3 = -A2
+A2 = -np.identity(n)
 A = np.append(A1, A2, axis=0)
-A = np.append(A, A3, axis=0)
-del A1, A2, A3
-b = np.append(np.ones([n+1,1]), np.zeros([n,1]), axis=0)
+del A1, A2
+b = np.append(np.ones([1,1]), np.zeros([n,1]), axis=0)
 
 p = np.ones([n, 1]) - np.random.rand(n, 1)
 print("init_p = ", p.T)
-u = np.zeros([2*n+1, 1])
+u = np.zeros([n+1, 1])
 a1 = 0.01
 a2 = 0.01
 d = 0.0001 # 梯度下降终止条件 |p - p_new| < d
